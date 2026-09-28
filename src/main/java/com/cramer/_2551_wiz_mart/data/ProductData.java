@@ -1,10 +1,10 @@
-package com.cramer._551_shop_vorlage.data;
+package com.cramer._2551_wiz_mart.data;
 
-import com.cramer._551_shop_vorlage.model.Product;
-import com.cramer._551_shop_vorlage.model.Potion;
-import com.cramer._551_shop_vorlage.model.Cloak;
-import com.cramer._551_shop_vorlage.model.Wand;
-import com.cramer._551_shop_vorlage.model.Spellbook;
+import com.cramer._2551_wiz_mart.model.Product;
+import com.cramer._2551_wiz_mart.model.Potion;
+import com.cramer._2551_wiz_mart.model.Cloak;
+import com.cramer._2551_wiz_mart.model.Wand;
+import com.cramer._2551_wiz_mart.model.Spellbook;
 
 import java.util.ArrayList;
 import java.util.List;

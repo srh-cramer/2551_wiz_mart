@@ -1,4 +1,4 @@
-package com.cramer._551_shop_vorlage.model;
+package com.cramer._2551_wiz_mart.model;
 
 // Repräsentiert einen Eintrag im Warenkorb mit seiner Anzahl
 public class CartItem {

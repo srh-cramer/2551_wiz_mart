@@ -1,4 +1,4 @@
-package com.cramer._551_shop_vorlage.model;
+package com.cramer._2551_wiz_mart.model;
 
 public class Potion extends Product {
     private String effect;

@@ -22,7 +22,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.cramer._551_shop_vorlage.controller.ShopController">
+            fx:controller="com.cramer._2551_wiz_mart.controller.ShopController">
 
     <top>
         <VBox>

@@ -1,8 +1,8 @@
-package com.cramer._551_shop_vorlage.controller;
+package com.cramer._2551_wiz_mart.controller;
 
-import com.cramer._551_shop_vorlage.model.CartItem;
-import com.cramer._551_shop_vorlage.model.Product;
-import com.cramer._551_shop_vorlage.service.ShopService;
+import com.cramer._2551_wiz_mart.model.CartItem;
+import com.cramer._2551_wiz_mart.model.Product;
+import com.cramer._2551_wiz_mart.service.ShopService;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;

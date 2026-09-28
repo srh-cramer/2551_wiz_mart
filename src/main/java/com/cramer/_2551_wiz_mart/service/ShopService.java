@@ -1,8 +1,8 @@
-package com.cramer._551_shop_vorlage.service;
+package com.cramer._2551_wiz_mart.service;
 
-import com.cramer._551_shop_vorlage.data.ProductData;
-import com.cramer._551_shop_vorlage.model.Product;
-import com.cramer._551_shop_vorlage.model.ShoppingCart;
+import com.cramer._2551_wiz_mart.data.ProductData;
+import com.cramer._2551_wiz_mart.model.Product;
+import com.cramer._2551_wiz_mart.model.ShoppingCart;
 
 
 import java.util.List;

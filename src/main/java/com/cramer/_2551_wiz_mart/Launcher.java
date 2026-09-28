@@ -1,4 +1,4 @@
-package com.cramer._551_shop_vorlage;
+package com.cramer._2551_wiz_mart;
 
 import javafx.application.Application;
 
