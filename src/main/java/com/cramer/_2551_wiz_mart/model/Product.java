@@ -1,0 +1,54 @@
+package com.cramer._551_shop_vorlage.model;
+
+public abstract class Product {
+    private int id;
+    private String name;
+    private double price;
+    private String category;
+    private String description;
+    private int stock;
+
+    public Product(int id, String name, double price, String category,
+                   String description, int stock) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.category = category;
+        this.description = description;
+        this.stock = stock;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    @Override
+    public String toString() {
+        return name + " - " + price + " Gold";
+    }
+
+}
