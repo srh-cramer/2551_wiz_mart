@@ -8,7 +8,7 @@ public class Cloak extends Product {
     public Cloak(int id, String name, double price, String description,
                  int stock, String material, int protectionLevel) {
 
-        super(id, name, price, "Cloak", description, stock);
+        super(id, name, price, Category.CLOAK, description, stock);
 
         this.material = material;
         this.protectionLevel = protectionLevel;

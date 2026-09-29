@@ -8,7 +8,7 @@ public class Wand extends Product {
     public Wand(int id, String name, double price, String description,
                 int stock, String woodType, int magicPower) {
 
-        super(id, name, price, "Wand", description, stock);
+        super(id, name, price, Category.WAND, description, stock);
 
         this.woodType = woodType;
         this.magicPower = magicPower;

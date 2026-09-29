@@ -1,6 +1,7 @@
 package com.cramer._2551_wiz_mart.controller;
 
 import com.cramer._2551_wiz_mart.model.CartItem;
+import com.cramer._2551_wiz_mart.model.Category;
 import com.cramer._2551_wiz_mart.model.Product;
 import com.cramer._2551_wiz_mart.service.ShopService;
 import javafx.fxml.FXML;
@@ -48,7 +49,9 @@ public class ShopController {
         categoryComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             displayProducts();
         });
-
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            displayProducts();
+        });
 
         displayProducts();
         updateCartView();
@@ -57,10 +60,10 @@ public class ShopController {
     // Füge dem Kategorie-Dropdown die Einträge hinzu
     private void setupCategories() {
         categoryComboBox.getItems().add("All");
-        categoryComboBox.getItems().add("Potion");
-        categoryComboBox.getItems().add("Cloak");
-        categoryComboBox.getItems().add("Wand");
-        categoryComboBox.getItems().add("Spellbook");
+
+        for (Category category : Category.values()){
+            categoryComboBox.getItems().add(category.name());
+        }
 
         categoryComboBox.setValue("All");
     }
@@ -89,13 +92,16 @@ public class ShopController {
 
         for (Product product : products) {
 
+            // Suche
             if (!searchText.isEmpty()
                     && !product.getName().toLowerCase().contains(searchText)) {
                 continue;
             }
 
+            // Filtern
+            String currentProductCategory = product.getCategory().toString();
             if (!selectedCategory.equals("All")
-                    && !product.getCategory().equals(selectedCategory)) {
+                    && !currentProductCategory.equals(selectedCategory)) {
                 continue;
             }
 
@@ -115,7 +121,7 @@ public class ShopController {
         card.setPrefWidth(220);
 
         Label nameLabel = new Label(product.getName());
-        Label categoryLabel = new Label(product.getCategory());
+        Label categoryLabel = new Label(product.getCategory().toString());
         Label priceLabel = new Label(
                 String.format("%.2f Gold", product.getPrice())
         );

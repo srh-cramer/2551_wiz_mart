@@ -7,7 +7,7 @@ public class Potion extends Product {
     public Potion(int id, String name, double price, String description,
                   int stock, String effect, int strength) {
 
-        super(id, name, price, "Potion", description, stock);
+        super(id, name, price, Category.POTION, description, stock);
 
         this.effect = effect;
         this.strength = strength;

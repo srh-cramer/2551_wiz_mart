@@ -4,11 +4,11 @@ public abstract class Product {
     private int id;
     private String name;
     private double price;
-    private String category;
+    private Category category;
     private String description;
     private int stock;
 
-    public Product(int id, String name, double price, String category,
+    public Product(int id, String name, double price, Category category,
                    String description, int stock) {
         this.id = id;
         this.name = name;
@@ -30,7 +30,7 @@ public abstract class Product {
         return price;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 

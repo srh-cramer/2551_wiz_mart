@@ -8,7 +8,7 @@ public class Spellbook extends Product {
     public Spellbook(int id, String name, double price, String description,
                      int stock, String school, int spellCount) {
 
-        super(id, name, price, "Spellbook", description, stock);
+        super(id, name, price, Category.SPELLBOOK, description, stock);
 
         this.school = school;
         this.spellCount = spellCount;
