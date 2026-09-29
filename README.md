@@ -186,19 +186,19 @@ Entwickeln Sie deshalb eine **generische Repository-Klasse**, die unterschiedlic
 
 ### Anforderungen
 
-Erstellen Sie eine Klasse `Repository<T>`.
+* Legen Sie ein Package `repository` an. Erstellen Sie darin eine Klasse `Repository<T>`.
 
-Das Repository soll unsere Datenbasis verwalten, die für unsere Produkte z.Zt. vom Typ `List<Product>` ist.
+* Das Repository soll unsere Datenbasis verwalten, die für unsere Produkte z.Zt. vom Typ `List<Product>` ist.
 
-Das Repository soll mindestens folgende Funktionen zur Verwaltung der Liste anbieten:
+* Das Repository soll mindestens folgende Funktionen zur Verwaltung der Liste anbieten:
 
-* Ein Objekt hinzufügen: `add()`
-* Ein Objekt entfernen: `remove()`
-* Alle Objekte zurückgeben: `findAll()`
+  * Ein Objekt hinzufügen: `add()`
+  * Ein Objekt entfernen: `remove()`
+  * Alle Objekte zurückgeben: `findAll()`
 
-Dabei soll es keine Rolle spielen, von welchem Datentyp die Objekte sind.
-
-Passen Sie anschließend den `ShopService` so an, dass er anstatt von `List<Product>` nun `Repository<Product>` verwendet.
+* Es soll keine Rolle spielen, von welchem Datentyp die Objekte sind.
+* Passen Sie anschließend den `ShopService` so an, dass er anstatt von `List<Product>` nun `Repository<Product>` verwendet.
+    * Der Aufruf von `ProductData.createProducts()` darf im Service enthalten bleiben, auch wenn die Schichtentrennung dadurch nicht hundertprozentig erfolgt.
 
 ### Tipps
 
@@ -215,6 +215,82 @@ public void add(T item) {
     items.add(item);
 }
 ```
+---
+## Aufgabe 5 – Ein Enum für Sortierungen
+
+Im Shop gibt es bereits eine Auswahlmöglichkeit für die Sortierung der Produkte.
+Aktuell hat diese Auswahl jedoch noch keine Funktion.
+
+Auch hier soll die Sortierung mit einem Enum gelöst werden, das ein paar mehr Eigenschaften hat.
+
+Ein Enum kann genau wie eine Klasse Attribute und Konstruktoren haben.
+Hier sehen Sie die Definition eines Enums `Priority`, das einen Konstruktor und ein Attribut `label` zur "hübscheren" Darstellung hat:
+
+```java
+public enum Priority {
+
+    LOW("Niedrig"),
+    MEDIUM("Mittel"),
+    HIGH("Hoch");
+
+    private final String label;
+
+    Priority(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+}
+```
+
+### Anforderungen
+
+* Entsprechend dem Beispiel oben soll es ein Enum `SortOption` geben, das folgende Werte hat:
+  * NAME
+  * PRICE_ASCENDING
+  * PRICE_DESCENDING
+* Die "hübschen" Labels der Werte können Sie aus der Klasse `ShopController` übernehmen.
+* Befüllen Sie das Dropdown in der Controller-Methode `setupSorting()` nun dynamisch mit den Werten aus `SortOption` - im Grunde so, wie Sie es in Aufgabe 3 in der Methode `setupCategories()` gelöst haben.
 
 ---
+## Aufgabe 6 - Sortier-Enum verwenden
+Das angelegte Enum soll nun im Controller verwendet werden, um die Sortierfunktionalität zu ergänzen.
+Hierfür benutzen wir einen **Lambda-Ausdruck**. Ein Lambda-Ausdruck beschreibt im Grunde eine Funktion, der wir keinen Namen geben.
+Ein sehr simpler Lambda-Ausdruck ist:
+```java
+(x) -> x * 2
+```
+Dieser lässt sich lesen als "Für `x` führe `x * 2` aus und gib mir das Ergebnis."
 
+Folgender Code zeigt, wie eine Liste von Personen nach Ihrem Alter mithilfe einer Lamba-Expression sortiert werden:
+
+```java
+List<Person> people = new ArrayList<>();
+
+people.sort((person1, person2) ->
+        Integer.compare(person1.getAge(), person2.getAge())
+);
+```
+In diesem Code wird mithilfe der Methode `sort()` die Liste `people` sortiert. Die Methode übergibt dem Lambda-Ausdruck dabei jeweils zwei Elemente `person1` und `person2`.
+Der Lambda-Ausdruck vergleicht dann deren Alter und gibt das Vergleichsergebnis an die Sortiermethode zurück.
+
+Entsprechend diesem Beispiel soll je nach ausgewählter Sortierung nach Name oder Preis (auf/absteigend) sortiert werden.
+
+### Anforderungen
+* Finden Sie die richtige Methode im Code, wo Sie die Sortierung ergänzen müssen
+* Ergänzen Sie Überprüfungen, welche der drei Sortierung vom Nutzer ausgewählt wurde
+* Je nach Nutzer-Auswahl soll die passende Sortierung entsprechend dem oberen Code-Beispiel mithilfe von Lambda-Ausdrücken erfolgen
+
+### Tipps
+Die Tipps geben Ihnen in zunehmend explizite Hilfestellung.
+Lesen Sie sich schrittweise immer nur einen Tipp durch.
+
+* Im Code befindet sich bereits ein `TODO` bei der Methode, wo die Sortierung ergänzt werden muss: `displayProducts()`
+* In den if-Abfragen zur Ermittlung der ausgewählten Sortierung vergleichen Sie zwei Objekte vom Typ `SortOption`. 
+Den Vergleich von Enums können Sie mit `==` anstellen.
+* Überprüfen Sie für die Lambda-Ausdrücke, welchen Datentyp die Elemente haben, nach denen sortiert werden soll. 
+Beim Preis handelt es sich dabei um einen `double`, beim Namen um einen `String`. Der Beispiel-Lambda-Ausdruck arbeitet mit `int`.
+* Zum Vergleichen von zwei Strings steht Ihnen die Methode `.compareTo()` zur Verfügung, z.B: `"Aaron".compareTo("Bert")`
+---
