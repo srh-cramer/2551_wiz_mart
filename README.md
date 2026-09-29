@@ -128,8 +128,7 @@ Direction dir = Direction.NORTH;
 
 * Das Enum soll die vier Produktkategorien des Shops enthalten.
 * Ersetzen Sie den bisherigen `String`-Datentyp für die Kategorie durch das neue Enum.
-* Passen Sie alle Stellen an, an denen bisher mit den Kategorien als `String` gearbeitet wird. 
-Dies ist nicht nur die Model-Klasse `Prduct`!
+* Passen Sie alle Stellen an, an denen bisher mit den Kategorien als `String` gearbeitet wird (außer die `categoryComboBox` im Controller)
 * Die Funktionalität der Anwendung soll für den Benutzer unverändert bleiben.
 
 ### Tipps
@@ -140,13 +139,82 @@ Lesen Sie sich schrittweise immer nur einen Tipp durch.
 1. Ihr Enum soll die vier Produktkategorien enthalten. Diese können Sie relativ bequem im Projektbaum ablesen.
 2. Sie sehen, dass das Attribut `category` bereits an vielen Stellen im Code verwendet wird. 
 Hier kann Ihnen die IntelliJ-Funktion `Refactor -> Type Migration` helfen, um keine Stelle zu übersehen.
-3. Nicht nur die Modelklasse `Product` benutzt die Kategorien, sondern auch das Dropdown-Menü im Controller: `ComboBox<String>`
-Um das Enum im Controller verfügbar zu haben, müssen Sie es dort importieren.
 
 ---
-## Aufgabe 3 - TBD
+## Aufgabe 3 - Kategorie-Enums nutzen
+In der Methode `setupCategories()` in `ShopController` werden die Kategorien z.Zt. einzeln hinzugefügt. 
+Fügen wir eine Kategorie hinzu, muss der Code hier manuell angepasst werden.
+Dies lässt sich durch die Nutzung von Enums nun optimieren.
 
-Test
+### Anforderungen
+* Finden Sie einen Weg, die definierten Shop-Kategorien als Einträge im Dropdown dynamisch anzulegen. Ändern Sie dabei nicht den Typ `ComboBox<String>`!
+* Behalten Sie den Default-Eintrag `"All"`, bei dem nach keiner Kategorie gefiltert wird.
+* Passen Sie ggf. die Filterlogik in `displayProducts()` an Ihre neue Implementierung an.
+
+### Tipp
+Lesen Sie sich den Tipp nur bei Bedarf durch:
+
+Überprüfen Sie die Methoden, die Ihnen für das Enum `Category` zur Verfügung stehen. Die Methode `.values()` gibt Ihnen eine iterierbare Datenstruktur zurück.
+
+---
+## Aufgabe 4 - Repository ergänzen
+
+Wiz-Mart hat aktuell zwar keine Datenbank-Anbindung, könnte aber eine haben.
+Diese potenzielle Änderung soll aber möglichst wenig Auswirkungen auf unseren Code haben. 
+Insbesondere `ShopService`, in der sich die Domänenlogik befindet, soll unabhängig von der Datenquelle arbeiten können.
+
+Eine Lösung für dieses Problem ist eine **Abstraktion des Datenzugriffs** durch ein `Repository`, die den Datenzugriff kapselt. 
+Die Reihenfolge der Schichten ist dann: 
+
+Controller => Service => Repository => Datenquelle
+
+Ob das Repository die Produkte aus einer Datenbank, einer Datei oder dem Programm selbst bereitstellt, ist dem restlichen Programm dann egal.
+
+Auf diese Weise können auch später mal Kunden oder Bestellungen von einem Repository verwaltet werden. Immer sind die Aufgaben ungefähr gleich und ähneln CRUD:
+Produkte/Kunden/Bestellungen suchen, auslesen, löschen, etc.
+
+Das könnte man durch einzelne `ProductRepository`, `CustomerRepository`, `OrderRepository`, etc. lösen. 
+Die Implementierungen wären allerdings sehr ähnlich, weil die grundlegenden Funktionalitäten unabhängig vom Datentyp sind.
+
+Alternativ arbeitet man mit Generics:
+
+`Repository<T>`
+
+`T` ist hierbei ein Platzhalter für den konkreten Datentyp wie `Product`, `Customer` oder `Order`.
+
+Entwickeln Sie deshalb eine **generische Repository-Klasse**, die unterschiedliche Arten von Objekten verwalten kann.
+
+### Anforderungen
+
+Erstellen Sie eine Klasse `Repository<T>`.
+
+Das Repository soll unsere Datenbasis verwalten, die für unsere Produkte z.Zt. vom Typ `List<Product>` ist.
+
+Das Repository soll mindestens folgende Funktionen zur Verwaltung der Liste anbieten:
+
+* Ein Objekt hinzufügen: `add()`
+* Ein Objekt entfernen: `remove()`
+* Alle Objekte zurückgeben: `findAll()`
+
+Dabei soll es keine Rolle spielen, von welchem Datentyp die Objekte sind.
+
+Passen Sie anschließend den `ShopService` so an, dass er anstatt von `List<Product>` nun `Repository<Product>` verwendet.
+
+### Tipps
+
+Die Tipps geben Ihnen in zunehmend explizite Hilfestellung.
+Lesen Sie sich schrittweise immer nur einen Tipp durch.
+
+1. Das Repository soll eine Liste mit beliebigen Objekten verwalten können. Diese Liste sollten Sie als Attribut der Klasse verfügbar machen.
+2. Der Typ der verwalteten Objekte soll nicht fest in der Klasse stehen. Ihr Attribut könnte daher z.B. folgendermaßen aussehen:
+   `private List<T> items;`
+3. Unten finden Sie die Methode zum Hinzufügen von Objekten zur Liste `items`. Fügen Sie diese Methode der Klasse hinzu. 
+Orientieren Sie sich bei der Implementierung von Löschen und Zurückgeben an dieser Implementierung.
+```java
+public void add(T item) {
+    items.add(item);
+}
+```
 
 ---
 
