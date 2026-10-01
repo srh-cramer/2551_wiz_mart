@@ -3,22 +3,26 @@ package com.cramer._2551_wiz_mart.service;
 import com.cramer._2551_wiz_mart.data.ProductData;
 import com.cramer._2551_wiz_mart.model.Product;
 import com.cramer._2551_wiz_mart.model.ShoppingCart;
+import com.cramer._2551_wiz_mart.repository.Repository;
 
 
 import java.util.List;
 
 public class ShopService {
 
-    private List<Product> products;
+    private Repository<Product> products;
     private ShoppingCart cart;
 
     public ShopService() {
-        products = ProductData.createProducts();
+        products = new Repository<>();
+        for (Product product : ProductData.createProducts()){
+            products.add(product);
+        }
         cart = new ShoppingCart();
     }
 
     public List<Product> getProducts() {
-        return products;
+        return products.findAll();
     }
 
     public ShoppingCart getCart() {
