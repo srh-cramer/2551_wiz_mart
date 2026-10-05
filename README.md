@@ -294,3 +294,68 @@ Den Vergleich von Enums können Sie mit `==` anstellen.
 Beim Preis handelt es sich dabei um einen `double`, beim Namen um einen `String`. Der Beispiel-Lambda-Ausdruck arbeitet mit `int`.
 * Zum Vergleichen von zwei Strings steht Ihnen die Methode `.compareTo()` zur Verfügung, z.B: `"Aaron".compareTo("Bert")`
 ---
+## Aufgabe 7 – Warenkorb beobachtbar machen
+
+Aktuell muss der `ShopController` nach jeder Änderung des Warenkorbs selbst dafür sorgen, dass die Anzeige aktualisiert wird.
+Beispielsweise wird nach dem Hinzufügen oder Entfernen eines Produkts immer explizit `updateCartView()` aufgerufen.
+
+In einer größeren Software ist der Controller jedoch nicht die einzige Komponente, die über Änderungen des Warenkorbs informiert werden sollte:
+z.B. eine Komponenten zur Rabattberechnung oder zur Aktualisierung von Statistiken.
+
+Der Warenkorb soll daher so weiterentwickelt werden, dass andere Komponenten sich für Änderungen **registrieren** können und so über jede Änderung des Warenkorbs automatisch informiert werden.
+
+Hierzu benutzen wir das Design-Pattern **Observer** (engl. für "Beobachter"): Andere Komponenten sind als **Beobachter** einer Komponente registriert und werden bei Änderungen benachrichtigt.
+
+Die Klasse `ShoppingCart` wird so erweitert, dass Objekte vom Typ `CartObserver` diese beobachten können und über Änderungen benachrichtigt werden.
+
+Den Typ `CartObserver` wird durch ein **Interface** abgebildet, da verschiedenste Komponenten des Shops die Fähigkeit haben können, den Shop zu beobachten.
+
+### Anforderungen
+
+* Schreiben Sie ein Interface `CartObserver`, das genau eine Methode `cartChanged()` ohne Rückgabewert hat.\
+Dieses Interface sagt im Grunde: "Wer CartOberserver ist, muss eine Methode besitzen, die aufgerufen werden kann, wenn sich der Warenkorb geändert hat."
+* Ein Objekt vom Typ `CartObserver` soll sich beim `ShoppingCart` als Beobachter registrieren können.
+Ergänzen Sie hierzu ein Attribut `observers` in `ShoppingCart`, in dem alle Beobachter des Warenkorbs als Liste verwaltet werden.
+* Ergänzen Sie in `ShoppingCart` drei Methoden:
+  * `addObserver()`
+  * `removeObserver()`
+  * `notifyObservers()`: Diese Methode soll später aufgerufen werden, wenn sich der Warenkorb ändert. 
+  In der Methode soll für alle `CartObserver`s die Methode `cartChanged()` ausgeführt werden.
+* Die Methode `notifyObservers()` soll immer dann aufgerufen werden, wenn sich der Warenkorb ändert. 
+Bestimmen Sie selbst die Methoden in der Klasse `ShoppingCart`, bei denen das der Fall ist und ergänzen Sie in diesen Methoden den Aufruf von `notifyObservers()`.
+
+
+### Tipps
+
+Die Tipps geben Ihnen in zunehmend explizite Hilfestellung.
+Lesen Sie sich schrittweise immer nur einen Tipp durch.
+
+1. Rufen Sie sich die Schreibweise eines Interfaces in Erinnerung. Eine Methode eines Interfaces ist immer abstrakt, sie hat also keinen Methodenkörper!
+2. Ein definiertes Interface können Sie an anderen Stellen genau wie einen Datentypen verwenden. Das Attribut `observers` kann also vom Datentyp `List<CartObserver>` sein. Denken Sie daran, die Liste im Konstruktor zu intialisieren!
+3. Die Methoden, bei denen sich der Warenkorb ändert, sind beim Hinzufügen, Entfernen und Leeren des Warenkorbs. In einer der Methoden müssen Sie `notifyObservers()` zweimal aufrufen!
+---
+## Aufgabe 8 - Beobachter bei Warenkorb-Änderungen informieren
+
+Das Interface `CartObserver` existiert, doch noch wird es von keiner Klasse genutzt. Daher gibt es momentan auch noch keine Beobachter des Warenkorbs.
+
+Nun soll die Klasse `ShopController` sich als Beobachter des Warenkorbs registrieren.
+Immer, wenn sich der Warenkorb ändert, soll dann vom Controller die Methode `updateCartView()` ausgeführt werden, damit die Ansicht des Warenkorbs in der UI bei jeder Änderung aktuell bleibt.
+
+Hier gäbe es nun eine klassische Implementierungsmöglichkeit, bei der `ShopController` das Interface `CartObserver` und die Methode `cartChanged()` implementiert.
+
+Wir entscheiden uns bewusst **gegen** diese Implementierung, um stattdessen den Umgang mit Lambda-Ausdrücken und Interfaces zu lernen.
+
+Da das Interface nur aus einer einzelnen abstrakten Methode besteht, lässt sich der Observer auch mithilfe eines Lambda-Ausdrucks registrieren.
+In unserem Fall sieht dieser Ausdruck folgendermaßen aus:
+```java
+shopService.getCart().addObserver(() -> updateCartView());
+```
+
+
+### Anforderungen
+* Machen Sie sich mit dem vorgegebenen Lambda-Ausdruck vertraut. Überlegen Sie, welche Methode hier als Parameter übergeben wird und wann diese ausgeführt wird.
+* Ergänzen Sie die Code-Zeile in der Methode `initialize()` im `ShopController`.
+* Entfernen Sie nun überflüssige Aufrufe der Methode `updateCartView()` aus dem Controller.
+* Die Funktionalität der UI soll sich für den Benutzer nicht ändern.
+
+---
