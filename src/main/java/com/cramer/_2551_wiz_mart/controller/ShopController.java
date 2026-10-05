@@ -3,6 +3,7 @@ package com.cramer._2551_wiz_mart.controller;
 import com.cramer._2551_wiz_mart.model.CartItem;
 import com.cramer._2551_wiz_mart.model.Category;
 import com.cramer._2551_wiz_mart.model.Product;
+import com.cramer._2551_wiz_mart.model.SortOption;
 import com.cramer._2551_wiz_mart.service.ShopService;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -35,7 +36,7 @@ public class ShopController {
     private ComboBox<String> categoryComboBox;
 
     @FXML
-    private ComboBox<String> sortComboBox;
+    private ComboBox<SortOption> sortComboBox;
 
     private ShopService shopService;
 
@@ -70,11 +71,13 @@ public class ShopController {
 
     // Füge dem Sortierungs-Dropdown die Einträge hinzu
     private void setupSorting() {
-        sortComboBox.getItems().add("Name");
-        sortComboBox.getItems().add("Price: Low to High");
-        sortComboBox.getItems().add("Price: High to Low");
+        //sortComboBox.getItems().add(SortOption.NAME);
 
-        sortComboBox.setValue("Name");
+        for (SortOption sortOption : SortOption.values()){
+            sortComboBox.getItems().add(sortOption);
+        }
+
+        sortComboBox.setValue(SortOption.NAME);
     }
 
     // Zeige nur die Produkte an, nach denen gefiltert/gesucht wurde
@@ -86,7 +89,7 @@ public class ShopController {
 
         String searchText = searchField.getText().toLowerCase();
         String selectedCategory = categoryComboBox.getValue();
-        String selectedSort = sortComboBox.getValue();
+        SortOption selectedSort = sortComboBox.getValue();
 
         List<Product> products = shopService.getProducts();
 
@@ -105,8 +108,11 @@ public class ShopController {
                 continue;
             }
 
+            // Bleibt die Zeile hier so?
             productPane.getChildren().add(createProductCard(product));
         }
+
+        //TODO: Sortierung ergänzen
 
         productCountLabel.setText(
                 "Products: " + productPane.getChildren().size()
