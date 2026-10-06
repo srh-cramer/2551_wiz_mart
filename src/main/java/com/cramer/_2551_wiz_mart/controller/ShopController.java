@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShopController {
@@ -48,6 +49,9 @@ public class ShopController {
         setupSorting();
 
         categoryComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            displayProducts();
+        });
+        sortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             displayProducts();
         });
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -92,6 +96,7 @@ public class ShopController {
         SortOption selectedSort = sortComboBox.getValue();
 
         List<Product> products = shopService.getProducts();
+        List<Product> filterProducts = new ArrayList<>(); // Liste, die gefilterte/gesuchte Produkte enthalten soll
 
         for (Product product : products) {
 
@@ -108,11 +113,28 @@ public class ShopController {
                 continue;
             }
 
-            // Bleibt die Zeile hier so?
-            productPane.getChildren().add(createProductCard(product));
+            filterProducts.add(product); // füge gesuchtes/gefiltertes Produkt zu Anzeigeliste hinzu
+
         }
 
-        //TODO: Sortierung ergänzen
+        // Sortiere die Anzeigeliste:
+        if (selectedSort == SortOption.PRICE_ASCENDING) {
+            filterProducts.sort((product1, product2) ->
+                    Double.compare(product1.getPrice(), product2.getPrice()));
+        }
+        else if (selectedSort == SortOption.PRICE_DESCENDING){
+            filterProducts.sort((product1, product2) ->
+                    Double.compare(product2.getPrice(), product1.getPrice()));
+        }
+        else if (selectedSort == SortOption.NAME){
+            filterProducts.sort((product1, product2) ->
+                    product1.getName().compareTo(product2.getName()));
+        }
+
+        // Platziere alle Produkte aus Anzeigenliste in GUI:
+        for (Product p : filterProducts) {
+            productPane.getChildren().add(createProductCard(p));
+        }
 
         productCountLabel.setText(
                 "Products: " + productPane.getChildren().size()
