@@ -7,9 +7,12 @@ import java.util.List;
 public class ShoppingCart {
 
     private List<CartItem> items;
+    //Liste der Beobachter:
+    private List<CartObserver> observers;
 
     public ShoppingCart() {
         items = new ArrayList<>();
+        observers = new ArrayList<>();
     }
 
     public void addProduct(Product product) {
@@ -17,11 +20,13 @@ public class ShoppingCart {
         for (CartItem item : items) {
             if (item.getProduct().getId() == product.getId()) {
                 item.increaseQuantity();
+                notifyObservers();
                 return;
             }
         }
 
         items.add(new CartItem(product, 1));
+        notifyObservers();
     }
 
     public void removeProduct(Product product) {
@@ -29,10 +34,12 @@ public class ShoppingCart {
         items.removeIf(item ->
                 item.getProduct().getId() == product.getId()
         );
+        notifyObservers();
     }
 
     public void clear() {
         items.clear();
+        notifyObservers();
     }
 
     public List<CartItem> getItems() {
@@ -59,5 +66,19 @@ public class ShoppingCart {
         }
 
         return count;
+    }
+
+    public void addObserver(CartObserver observer){
+        observers.add(observer);
+    }
+
+    public void removeObserver(CartObserver observer){
+        observers.remove(observer);
+    }
+
+    private void notifyObservers(){
+        for (CartObserver observer: observers){
+            observer.cartChanged();
+        }
     }
 }

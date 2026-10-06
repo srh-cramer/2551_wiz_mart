@@ -45,6 +45,8 @@ public class ShopController {
     public void initialize() {
         shopService = new ShopService();
 
+        shopService.getCart().addObserver(() -> updateCartView());
+
         setupCategories();
         setupSorting();
 
@@ -59,7 +61,7 @@ public class ShopController {
         });
 
         displayProducts();
-        updateCartView();
+        updateCartView(); //Initialer Aufbau der Warenkorb-Ansicht
     }
 
     // Füge dem Kategorie-Dropdown die Einträge hinzu
@@ -165,7 +167,6 @@ public class ShopController {
 
         addButton.setOnAction(event -> {
             shopService.addToCart(product);
-            updateCartView();
         });
 
         card.getChildren().addAll(
@@ -208,7 +209,6 @@ public class ShopController {
     @FXML
     private void handleClearCart() {
         shopService.clearCart();
-        updateCartView();
     }
 
     @FXML
@@ -228,7 +228,6 @@ public class ShopController {
         );
 
         shopService.clearCart();
-        updateCartView();
     }
 
     private void showMessage(String title, String message) {
