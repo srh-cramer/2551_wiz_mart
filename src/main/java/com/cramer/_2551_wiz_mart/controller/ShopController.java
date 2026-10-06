@@ -44,7 +44,6 @@ public class ShopController {
     @FXML
     public void initialize() {
         shopService = new ShopService();
-
         shopService.getCart().addObserver(() -> updateCartView());
 
         setupCategories();
@@ -61,7 +60,6 @@ public class ShopController {
         });
 
         displayProducts();
-        updateCartView(); //Initialer Aufbau der Warenkorb-Ansicht
     }
 
     // Füge dem Kategorie-Dropdown die Einträge hinzu
